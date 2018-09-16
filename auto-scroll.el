@@ -100,7 +100,6 @@ Otherwise, stop the auto-scroll timer"
 	     (setq auto-scroll-timer nil))
     ))
 
-
 (defun auto-scroll-faster ()
   "Reduce period by period-granularity."
   (interactive)
@@ -112,7 +111,7 @@ Otherwise, stop the auto-scroll timer"
   (interactive)
   (auto-scroll-delta-period auto-scroll-period-granularity)
   )
-  
+
 (defun auto-scroll-delta-period (delta)
   "Change period by DELTA, subject to auto-scroll-minimum-period."
   (let ((new-period
