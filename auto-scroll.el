@@ -37,8 +37,8 @@
 (define-minor-mode auto-scroll-mode
   "Minor mode for automatically scrolling the cursor"
   :init-value nil
-  :keymap '(("\C-c \M-a s" . 'auto-scroll-start)
-	    ("\C-c \M-a k" . 'auto-scroll-stop)
+  :keymap '(("\C-c \M-a" . 'auto-scroll-start)
+	    ("\C-c \M-a" . 'auto-scroll-stop)
 	    )
   :group 'convenience
   )
@@ -72,6 +72,7 @@
 This function can be safely called multiple times without
 starting multiple times, it will cancel the previous timer and
 start a new one with the given period."
+  (interactive)
   (progn
     (if period (setq auto-scroll-period period))
     (if (timerp auto-scroll-timer)
@@ -84,6 +85,7 @@ start a new one with the given period."
 (defun auto-scroll-next-line ()
   "Move cursor to next line, if not at end of buffer.
 Otherwise, stop the auto-scroll timer"
+  (interactive)
   (if (not (eq (point) (point-max)))
       (forward-line)
     (auto-scroll-stop))
@@ -91,6 +93,7 @@ Otherwise, stop the auto-scroll timer"
 
 (defun auto-scroll-stop ()
   "Stop the auto-scroll timer."
+  (interactive)
   (if (timerp auto-scroll-timer)
       ;; Don't try to stop a timer that hasn't been start.
       (progn (cancel-timer auto-scroll-timer)
@@ -100,11 +103,13 @@ Otherwise, stop the auto-scroll timer"
 
 (defun auto-scroll-faster ()
   "Reduce period by period-granularity."
+  (interactive)
   (auto-scroll-delta-period (* -1 auto-scroll-period-granularity))
   )
 
 (defun auto-scroll-slower ()
   "Increase period by period-granularity."
+  (interactive)
   (auto-scroll-delta-period auto-scroll-period-granularity)
   )
   
