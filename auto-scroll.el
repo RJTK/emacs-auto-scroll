@@ -34,12 +34,18 @@
   :group 'convenience
   :prefix "auto-scroll")
 
+;; Define the keymap
+(defvar auto-scroll-mode-map (make-keymap)
+  "A keymap for auto-scroll-mode.")
+(define-key auto-scroll-mode-map (kbd "C-c M-a") 'auto-scroll-start)
+(define-key auto-scroll-mode-map (kbd "C-c M-s") 'auto-scroll-stop)
+(define-key auto-scroll-mode-map (kbd "C-c C-f") 'auto-scroll-faster)
+(define-key auto-scroll-mode-map (kbd "C-c C-s") 'auto-scroll-slower)
+
 (define-minor-mode auto-scroll-mode
   "Minor mode for automatically scrolling the cursor"
   :init-value nil
-  :keymap '(("\C-c \M-a" . 'auto-scroll-start)
-	    ("\C-c \M-a" . 'auto-scroll-stop)
-	    )
+  :keymap auto-scroll-mode-map
   :group 'convenience
   )
 
