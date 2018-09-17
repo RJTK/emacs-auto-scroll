@@ -4,7 +4,7 @@
 
 ;; Author: Ryan J. Kinnear <Ryan@Kinnear.ca>
 ;; Keywords: conveniences
-;; Version: 0.0.1
+;; Version: 0.0.2
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -72,13 +72,21 @@
 (defvar auto-scroll-period auto-scroll-default-scroll-period)
 (defvar auto-scroll-timer nil)
 
-(defun auto-scroll-start (&optional period)
+(defun auto-scroll-start ()
+  "Interactive method to start scrolling with given PERIOD."
+  (interactive)
+  (auto-scroll-scroll-with-period
+   (string-to-number
+    (read-string "Scroll speed: "
+		 (number-to-string auto-scroll-period))))
+  )
+
+(defun auto-scroll-scroll-with-period (&optional period)
   "Start auto scrolling with the given PERIOD.
 
 This function can be safely called multiple times without
 starting multiple times, it will cancel the previous timer and
 start a new one with the given period."
-  (interactive)
   (progn
     (if period (setq auto-scroll-period period))
     (if (timerp auto-scroll-timer)
@@ -91,7 +99,6 @@ start a new one with the given period."
 (defun auto-scroll-next-line ()
   "Move cursor to next line, if not at end of buffer.
 Otherwise, stop the auto-scroll timer"
-  (interactive)
   (if (not (eq (point) (point-max)))
       (forward-line)
     (auto-scroll-stop))
@@ -124,7 +131,7 @@ Otherwise, stop the auto-scroll timer"
 	 (max auto-scroll-minimum-period (+ auto-scroll-period delta))
 	 ))
     (if (timerp auto-scroll-timer)
-      (auto-scroll-start new-period)
+      (auto-scroll-scroll-with-period new-period)
       (setq auto-scroll-period new-period)
       )
     new-period))
